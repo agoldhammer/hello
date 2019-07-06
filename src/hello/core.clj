@@ -38,15 +38,15 @@
       nil)))
 
 (defn reversed-pairs [dict]
-  (filter (complement nil?)
-          (map #(word-to-reversed-pair % dict) dict)))
+  (sort (filter (complement nil?)
+                (map #(word-to-reversed-pair % dict) dict))))
 
 (defn list-palindromes [dict]
-  (filter palindrome? dict))
+  (sort (filter palindrome? dict)))
 
 (defn words-from-frag [dict frag]
   "find all words in dict containing frag"
-  (filter #(includes? % frag) dict))
+  (sort (filter #(includes? % frag) dict)))
 
 (defn -main
   "I don't do a whole lot ... yet."
