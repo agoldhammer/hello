@@ -18,6 +18,7 @@
 
 (def dicts {:eng english-words :ger german-words :fr french-words :sp spanish-words})
 
+
 (defn goldie [s]
   (println "Hello" s))
 
@@ -40,27 +41,28 @@
       nil)))
 
 (defn reversed-pairs [dict]
-  (sort (filter (complement nil?)
-                (map #(word-to-reversed-pair % dict) dict))))
+  (sort-by (comp count first)
+           (filter (complement nil?)
+                   (map #(word-to-reversed-pair % dict) dict))))
 
 (defn list-palindromes [dict]
-  (sort (filter palindrome? dict)))
+  (sort-by count (filter palindrome? dict)))
 
 (defn words-from-frag
   "find all words in dict containing frag"
   [dict frag]
-  (sort (filter #(includes? % frag) dict)))
+  (sort-by count (filter #(includes? % frag) dict)))
 
 (defn with-dict
   "bind specified dict and call function f"
-   [dkey f & args]
-   (let [dict (dkey dicts)]
-     (apply f dict args)))
+  [dkey f & args]
+  (if (and
+       (keyword? dkey)
+       (contains? dicts dkey))
+    (let [dict (dkey dicts)]
+      (apply f dict args))
+    (println "error" dkey " is not a recognized dictionary")))
 ; example: (with-dict :eng words-from-frag "marge")
-
-(defn compare-by-count
-  [a b]
-  (compare (count a) (count b)))
 
 (defn -main
   "I don't do a whole lot ... yet."
