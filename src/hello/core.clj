@@ -16,6 +16,8 @@
 
 (def spanish-words (set (get-words "/Users/agold/Prog/wordlists/spanish")))
 
+(def dicts {:eng english-words :ger german-words :fr french-words :sp spanish-words})
+
 (defn goldie [s]
   (println "Hello" s))
 
@@ -44,11 +46,23 @@
 (defn list-palindromes [dict]
   (sort (filter palindrome? dict)))
 
-(defn words-from-frag [dict frag]
+(defn words-from-frag
   "find all words in dict containing frag"
+  [dict frag]
   (sort (filter #(includes? % frag) dict)))
+
+(defn with-dict
+  "bind specified dict and call function f"
+   [dkey f & args]
+   (let [dict (dkey dicts)]
+     (apply f dict args)))
+; example: (with-dict :eng words-from-frag "marge")
+
+(defn compare-by-count
+  [a b]
+  (compare (count a) (count b)))
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (println "Hello, World!" args))
