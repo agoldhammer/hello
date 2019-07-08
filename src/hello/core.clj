@@ -40,12 +40,16 @@
       [w wr]
       nil)))
 
-(defn reversed-pairs [dict]
+(defn reversed-pairs
+  "return lazy seq of vector pairs of [word rev-word] if rev-word is in dict"
+  [dict]
   (sort-by (comp count first)
            (filter (complement nil?)
                    (map #(word-to-reversed-pair % dict) dict))))
 
-(defn list-palindromes [dict]
+(defn list-palindromes
+  "list palindromes in dict sorted by length"
+  [dict]
   (sort-by count (filter palindrome? dict)))
 
 (defn words-from-frag
