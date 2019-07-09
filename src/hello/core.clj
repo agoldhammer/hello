@@ -1,20 +1,21 @@
 (ns hello.core
-  (:require [clojure.string :refer [includes?]])
+  (:require [clojure.string :refer [includes?]]
+            [clojure.core.reducers :as r])
   (:gen-class))
 
 (defn get-words [file-name]
   (with-open [rdr (clojure.java.io/reader file-name)]
     (doall (line-seq rdr))))
 
-(def english-words (set (get-words "/Users/agold/Prog/wordlists/english")))
+(def english-words (set (get-words "/home/agold/Prog/wordlists/english")))
 
-(def french-words (set (get-words "/Users/agold/Prog/wordlists/french")))
+(def french-words (set (get-words "/home/agold/Prog/wordlists/french")))
 
-#_(def german-words (set (get-words "/Users/agold/Prog/wordlists/ngerman")))
+#_(def german-words (set (get-words "/home/agold/Prog/wordlists/ngerman")))
 
-(def german-words (set (get-words "/Users/agold/Prog/wordlists/german")))
+(def german-words (set (get-words "/home/agold/Prog/wordlists/german")))
 
-(def spanish-words (set (get-words "/Users/agold/Prog/wordlists/spanish")))
+(def spanish-words (set (get-words "/home/agold/Prog/wordlists/spanish")))
 
 (def dicts {:eng english-words :ger german-words :fr french-words :sp spanish-words})
 
