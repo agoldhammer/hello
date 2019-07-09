@@ -1,6 +1,7 @@
 (ns hello.core
   (:require [clojure.string :refer [includes?]]
-            [clojure.core.reducers :as r])
+            [clojure.core.reducers :as r]
+            [criterium.core :as c])
   (:gen-class))
 
 (defn get-words [file-name]
@@ -48,15 +49,33 @@
            (filter (complement nil?)
                    (map #(word-to-reversed-pair % dict) dict))))
 
+(defn reversed-pairs2
+  "return lazy seq of vector pairs of [word rev-word] if rev-word is in dict"
+  [dict]
+  (sort-by (comp count first)
+           (r/foldcat 
+            (r/filter (complement nil?)
+                    (r/map #(word-to-reversed-pair % dict) dict)))))
+
 (defn list-palindromes
   "list palindromes in dict sorted by length"
   [dict]
   (sort-by count (filter palindrome? dict)))
 
+(defn list-palindromes2
+  "list palindromes in dict sorted by length"
+  [dict]
+  (sort-by count (r/foldcat (r/filter palindrome? dict))))
+
 (defn words-from-frag
   "find all words in dict containing frag"
   [dict frag]
   (sort-by count (filter #(includes? % frag) dict)))
+
+(defn words-from-frag2
+  "find all words in dict containing frag"
+  [dict frag]
+  (sort-by count (r/foldcat (r/filter #(includes? % frag) dict))))
 
 (defn with-dict
   "bind specified dict and call function f"
